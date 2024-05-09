@@ -10,9 +10,14 @@ Requires PHP: 8.0
  */
 
 if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly
+    exit;
 }
 
 define('RFL_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('RFL_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('RFL_PLUGIN_NAME', plugin_basename(__DIR__));
+
+/* Load classes */
+require_once('autoloader.php');
+
+const RAFFLE_DOMAIN = 'gcraffle';

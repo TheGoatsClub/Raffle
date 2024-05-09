@@ -1,11 +1,7 @@
 <?php
 
-if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly
-}
-
 /* Find all the *.php files in the app folder */
-$folderItems = glob(realpath(RFL_PLUGIN_PATH) . '/*');
+$folderItems = glob(realpath(RFL_PLUGIN_PATH) . '/app/*');
 
 if (empty($folderItems))
     return;
