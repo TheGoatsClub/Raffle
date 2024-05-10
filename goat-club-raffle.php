@@ -1,10 +1,10 @@
 <?php
 /*
-Plugin name: Goat Club Raffle
+Plugin name: RaffleClub
 Description: Giveaway builder
 Author: WOP lab LLC
 Author URI:  https://wop-lab.company/
-Text Domain: gcraffle
+Text Domain: raffle
 Version 1.0
 Requires PHP: 8.0
  */
@@ -20,4 +20,4 @@ define('RFL_PLUGIN_NAME', plugin_basename(__DIR__));
 /* Load classes */
 require_once('autoloader.php');
 
-const RAFFLE_DOMAIN = 'gcraffle';
+const RAFFLE_DOMAIN = 'raffle';

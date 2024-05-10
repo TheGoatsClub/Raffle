@@ -6,6 +6,16 @@ class RFL_Setup
     static function init()
     {
         add_action('init', [self::class, 'init_call']);
+        add_action('admin_enqueue_scripts', [self::class, 'admin_scripts_call']);
+    }
+
+    static function admin_scripts_call()
+    {
+        $post = get_post();
+        if (!empty($post) && $post->post_type === 'promotions') {
+            wp_enqueue_style('raffle-admin-styles', RFL_PLUGIN_URL . 'dest/css/admin.css');
+            wp_enqueue_script('raffle-admin-scripts', RFL_PLUGIN_URL . 'dest/js/admin-scripts.js');
+        }
     }
 
     static function init_call()
