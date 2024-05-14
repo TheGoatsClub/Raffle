@@ -1,0 +1,106 @@
+.gc_popup_bg {
+    background-color: rgb(27, 27, 27, 0.8);
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.1s ease;
+}
+
+.gc_popup {
+    max-width: 750px;
+    margin: auto;
+    //position: fixed;
+    //left: -110vw;
+    //top: 0;
+    //height: 100vh;
+    //z-index: 100;
+    //transition: 0.3s ease-in-out;
+    //overflow-y: auto;
+    background-image: linear-gradient(to top, #610596 0%, #2b5fb3 100%);
+    border-radius: 40px;
+    box-shadow: none;
+    padding: 18px 32px 26px;
+}
+
+.gc_popup__form_payment {
+
+    .gc_popup__title {
+        margin-bottom: 30px;
+        text-align: center;
+        color: #fff;
+    }
+
+    input[type='text'],
+    input[type='email'],
+    input[type='tel'],
+    input[type='password'],
+    textarea,
+    select,
+    .gc_credit_card {
+        border-radius: 8px;
+        border: 1px solid #4c47ac;
+        background: #312a7c;
+        padding: 15px 20px;
+        font-size: 16px;
+        color: #fff;
+        font-weight: 400;
+        height: 55px;
+    }
+
+    .gc_credit_card {
+        padding-top: 17px;
+    }
+
+    .form-body {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -15px;
+
+        .form-group {
+            width: 100%;
+            padding: 0 15px;
+            margin-bottom: 30px;
+
+            input, select {
+                width: 100%;
+            }
+        }
+
+        .form-col {
+            max-width: 50%;
+        }
+    }
+
+    label {
+        color: #fff;
+        margin-bottom: 5px;
+        display: block;
+        font-size: 16px;
+    }
+
+    input[type='submit'], button {
+        width: 100%;
+        background: linear-gradient(to left, #2CD9FF -173.39%, #AD00FF 145.56%);
+        font-size: 20px;
+        color: #FFFFFF;
+        padding: 20px 40px;
+        font-weight: 500;
+        border-radius: 6px;
+        outline: none;
+        border: none;
+        transition: 0.3s ease;
+
+        @include pointer();
+
+        @include response-min($desktop) {
+            &:hover {
+                transform: scale(0.97);
+            }
+        }
+    }
+}

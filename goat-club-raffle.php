@@ -20,4 +20,7 @@ define('RFL_PLUGIN_NAME', plugin_basename(__DIR__));
 /* Load classes */
 require_once('autoloader.php');
 
+/* Load Stripe library */
+require_once('lib/stripe/vendor/autoload.php');
+
 const RAFFLE_DOMAIN = 'raffle';

@@ -1,0 +1,121 @@
+*, :after, :before {
+    box-sizing: border-box;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+    font-size: 10px;
+
+    @include response-max($laptop-portrait - 1) {
+        overflow-x: hidden;
+    }
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: $color-primary;
+    font-family: 'Clash Display', Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 1.8rem;
+    line-height: 1.3;
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    flex-grow: 1;
+    margin: 30px 0 100px;
+}
+
+@include response-max($laptop-portrait) {
+    #wpadminbar {
+        display: none;
+    }
+}
+
+.gc_container {
+    max-width: 1250px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 30px;
+
+    @include response-max($laptop-portrait - 1) {
+        padding: 0 16px;
+    }
+}
+
+.gc_section {
+    padding: 40px 0;
+    position: relative;
+
+    @include response-max($laptop-portrait - 1) {
+        padding: 16px 0;
+    }
+}
+
+.pointer {
+    @include response-min($laptop-landscape + 1) {
+        cursor: pointer;
+    }
+}
+
+.event-none {
+    pointer-events: none;
+}
+
+.no-scroll {
+    overflow: hidden;
+}
+
+.d-block {
+    display: block !important;
+}
+
+.d-none {
+    display: none !important;
+}
+
+._spinner {
+    pointer-events: none;
+    position: relative;
+}
+
+._spinner:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: transparent;
+    opacity: 0.8;
+    backdrop-filter: blur(2px);
+}
+
+._spinner:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: url('../img/preloader.gif') center / contain no-repeat;
+    width: 25px;
+    height: 25px;
+    z-index: 100;
+}
+
+@include response-max($laptop-landscape) {
+    .desktop_version {
+        display: none !important;
+    }
+}
+
+@include response-min($laptop-landscape + 1) {
+    .mobile_version {
+        display: none !important;
+    }
+}

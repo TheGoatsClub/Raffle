@@ -23,7 +23,7 @@ class RFL_Admin
 
     static function metabox_call($post)
     {
-        include RFL_Helper::get_path('metaboxes');
+        include RFL_Helper::get_path('parts/admin/metaboxes');
     }
 
     static function save_post_call($postId, $post, $update)

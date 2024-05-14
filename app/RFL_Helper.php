@@ -9,7 +9,7 @@ class RFL_Helper
             return '';
         }
 
-        $pathToFile = RFL_PLUGIN_PATH . "parts/{$fileName}.php";
+        $pathToFile = RFL_PLUGIN_PATH . "{$fileName}.php";
 
         if (!file_exists($pathToFile)) {
             return '';

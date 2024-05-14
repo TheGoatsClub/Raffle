@@ -65,3 +65,6 @@ error_log
 cgi-bin
 webstat/*
 _files
+
+# libs
+/lib/
