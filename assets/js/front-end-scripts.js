@@ -1,5 +1,5 @@
-(function($){
-    $(document).ready(function() {
+(function ($) {
+    $(document).ready(function () {
         const ajax = raffle.ajaxurl;
         const stripeKey = raffle.stripeKey;
         let stripe = null;
@@ -11,11 +11,11 @@
             const elements = stripe.elements();
             const style = {
                 base   : {
-                    iconColor : '#fff',
-                    color     : '#fff',
-                    fontWeight: '400',
-                    fontFamily: '"Clash Display", "Arial", "Helvetica", sans-serif',
-                    fontSize  : '16px',
+                    iconColor      : '#fff',
+                    color          : '#fff',
+                    fontWeight     : '400',
+                    fontFamily     : '"Clash Display", "Arial", "Helvetica", sans-serif',
+                    fontSize       : '16px',
                     '::placeholder': {
                         color: '#fff'
                     },
@@ -48,17 +48,20 @@
                 formData.append('action', 'promotion_sign_up');
                 formData.append('nonce', raffle.nonce);
 
-                if (stripeKey && stripe && card) {
-                    stripe.createToken(card).then(function(result) {
-                        if (result.error) {
-                            console.log(result.error.message);
-                        } else {
-                            formData.append('gc_stripe_token', result.token.id);
-                        }
-                    });
+                if (!stripeKey || !stripe || !card) {
+                    return;
                 }
 
-                signUpFormAjax(formData);
+                stripe.createToken(card).then(function (result) {
+                    if (result.token.id) {
+                        formData.append('gc_stripe_token', result.token.id);
+                        signUpFormAjax(formData);
+                    } else {
+                        if (result.error) {
+                            console.log(result.error.message);
+                        }
+                    }
+                });
             });
         }
 
@@ -70,9 +73,9 @@
                 type       : 'POST',
                 url        : ajax,
                 data       : formData,
-                dataType   : 'json',
                 processData: false,
                 contentType: false,
+                cache      : false,
                 beforeSend : function () {
                     $(wrap).addClass('_spinner');
                 },

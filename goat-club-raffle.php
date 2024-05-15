@@ -24,3 +24,10 @@ require_once('autoloader.php');
 require_once('lib/stripe/vendor/autoload.php');
 
 const RAFFLE_DOMAIN = 'raffle';
+const RAFFLE_PREFIX = 'gc';
+
+register_activation_hook(__FILE__, function () {
+    RFL_Database::table_stripe_payments_install();
+});
+
+register_uninstall_hook(__FILE__, [RFL_Database::class, 'clear_after_uninstall']);

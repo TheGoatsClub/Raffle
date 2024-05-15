@@ -1,5 +1,4 @@
-<!--<div class="gc_popup_bg"></div>-->
-<div class="gc_popup">
+<div class="gc_popup active-popup">
     <div class="gc_popup__body">
         <form class="gc_popup__form_payment">
             <h2 class="gc_popup__title">
@@ -54,9 +53,11 @@
                     <div id="gc_credit_card" class="gc_credit_card"></div>
                 </div>
             </div>
+            <input type="hidden" name="gc_amount" value="1">
             <button>
                 <?php _e('Click here to confirm', RAFFLE_DOMAIN); ?>
             </button>
         </form>
     </div>
 </div>
+<div class="gc_popup_bg"></div>

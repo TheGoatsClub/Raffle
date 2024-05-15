@@ -39,7 +39,7 @@ class RFL_Functions
             'has_archive'   => true,
             'menu_position' => 20,
             'hierarchical'  => true,
-            'supports'      => ['title', 'excerpt', 'thumbnail', 'editor']
+            'supports'      => ['title', 'excerpt', 'thumbnail', 'editor'],
         ], $args);
 
         register_post_type($postType, $args);
@@ -51,9 +51,20 @@ class RFL_Functions
             'description'  => '',
             'public'       => true,
             'hierarchical' => true,
-            'has_archive'  => true
+            'has_archive'  => true,
         ], $args);
 
         register_taxonomy($taxonomy, $postType, $args);
+    }
+
+        static function user_log_in($user)
+    {
+        if (empty($user)) {
+            return;
+        }
+
+        wp_set_current_user($user->ID);
+        wp_set_auth_cookie($user->ID);
+        do_action('wp_login', $user->user_login, $user);
     }
 }
