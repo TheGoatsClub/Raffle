@@ -14,7 +14,7 @@ class RFL_Setup
     static function admin_scripts_call()
     {
         $post = get_post();
-        if (!empty($post) && $post->post_type === 'promotions') {
+        if (!empty($post) && $post->post_type === 'promotion') {
             wp_enqueue_style('raffle-admin-styles', RFL_PLUGIN_URL . 'dest/css/admin.css');
             wp_enqueue_script('raffle-admin-scripts', RFL_PLUGIN_URL . 'dest/js/admin-scripts.js');
         }
@@ -30,7 +30,7 @@ class RFL_Setup
         wp_localize_script('raffle-front-end-scripts', 'raffle', [
             'ajaxurl'   => admin_url('admin-ajax.php'),
             'nonce'     => wp_create_nonce('payment-promotion-nonce'),
-            'stripeKey' => '' //Make dynamically
+            'stripeKey' => 'key' //Make dynamically
         ]);
     }
 

@@ -53,7 +53,7 @@
                     <div id="gc_credit_card" class="gc_credit_card"></div>
                 </div>
             </div>
-            <input type="hidden" name="gc_amount" value="1">
+            <input type="hidden" name="gc_amount" value="100">
             <button>
                 <?php _e('Click here to confirm', RAFFLE_DOMAIN); ?>
             </button>

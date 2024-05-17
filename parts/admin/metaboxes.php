@@ -134,9 +134,7 @@ if (!empty($fields['raffle_attachments'][0])) {
                     <?php } else { ?>
                         <div class="raffle_repeater__item">
                             <div class="raffle_repeater__body">
-                                <p class="raffle_img_item">
-                                    <img src="" alt="">
-                                </p>
+                                <p class="raffle_img_item"></p>
 
                                 <span class="raffle_attachment_add button">
                                     <?php _e('Add image', RAFFLE_DOMAIN); ?>

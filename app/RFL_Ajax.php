@@ -35,13 +35,13 @@ class RFL_Ajax
         $email = $data['gc_email'] ?? '';
         $userId = get_current_user_id() ?: '';
 
+        $displayName = $data['gc_first_name'] ?? '';
+        $displayName .= !empty($data['gc_last_name']) ? ' ' . $data['gc_last_name'] : '';
+
         if (!$userId && $email) {
             $user = get_user_by('email', $email);
 
             if (empty($user)) {
-                $displayName = $data['gc_first_name'] ?? '';
-                $displayName .= !empty($data['gc_last_name']) ? ' ' . $data['gc_last_name'] : '';
-
                 $userArgs = [
                     'user_login'   => $email,
                     'first_name'   => $data['gc_first_name'] ?? '',
@@ -67,30 +67,39 @@ class RFL_Ajax
             return;
         }
 
-        $stripe = new \Stripe\StripeClient('');
+        $stripe = new \Stripe\StripeClient('key');
+
+        /* Get a customer */
+        $customer = $stripe->customers->retrieve('cus_NffrFeUfNV2Hib', []);
+
+        if (empty($customer)) {
+            /* Create a customer */
+            $customer = $stripe->customers->create([
+                'email' => $email,
+                'name'  => $displayName,
+            ]);
+        }
 
         try {
-            $paymentResponse = $stripe->paymentIntents->create([
-                'amount'              => $amount,
-                'currency'            => 'usd',
-                'description'         => "Purchase for Promotion - 3 entries",
-                'payment_method_data' => [
-                    'type' => 'card',
-                    'card' => [
-                        'token' => $stripeToken,
+            $subscription = $stripe->subscriptions->create([
+                'customer'         => $customer->id,
+                'currency'         => 'usd',
+                'metadata'         => [
+                    'product_id' => 'prod_Q7hA4NMjJ6VdJ0',
+                ],
+                'items'            => [
+                    [
+                        'price' => 'price_1PHRmZACbB2tPZl0s6pZ29eH',
                     ],
                 ],
-                'confirmation_method' => 'manual',
-                'confirm'             => true,
-                'return_url'          => get_site_url(),
-                'metadata'            => [
-                    'user_email'      => $email,
-                    'user_id'         => $userId,
-                    'active_for_days' => 20,
-                ],
+                // this subscription is not paid yet
+                'payment_behavior' => 'default_incomplete',
+                'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
+                'expand'           => ['latest_invoice.payment_intent'],
             ]);
 
         } catch (\Stripe\Exception\ApiErrorException $e) {
+            //insert to the database
             wp_send_json_error($e->getMessage());
         }
 
@@ -108,6 +117,14 @@ class RFL_Ajax
 
         RFL_Functions::user_log_in($user);
 
-        wp_send_json_success('Successful payment');
+        if (isset($subscription->latest_invoice->payment_intent->client_secret)) {
+            wp_send_json_success([
+                'clientSecret' => $subscription->latest_invoice->payment_intent->client_secret
+            ]);
+        } else {
+            wp_send_json_error([
+                'message' => 'Payment error'
+            ]);
+        }
     }
 }

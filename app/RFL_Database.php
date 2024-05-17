@@ -18,6 +18,7 @@ class RFL_Database
             `payment_id` varchar(250) DEFAULT NULL,
             `amount` int(10) unsigned DEFAULT NULL,
             `payment_request` TEXT NULL,
+            `message` TEXT NULL,
             `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (`id`)
         ) {$charset_collate} ";

@@ -15,7 +15,7 @@ class RFL_Admin
             'gc-getaways-fields',
             __('Getaways fields', RAFFLE_DOMAIN),
             [self::class, 'metabox_call'],
-            'promotions',
+            'promotion',
             'advanced',
             'high'
         );

@@ -8,7 +8,12 @@
 
         if (stripeKey) {
             stripe = Stripe(raffle.stripeKey);
-            const elements = stripe.elements();
+            const elements = stripe.elements({
+                mode    : 'subscription',
+                amount  : 100,
+                currency: 'usd'
+            });
+
             const style = {
                 base   : {
                     iconColor      : '#fff',
@@ -30,6 +35,7 @@
                 style         : style,
                 hidePostalCode: true
             });
+
             let cardSelector = '#gc_credit_card';
 
             if ($(cardSelector).length) {
