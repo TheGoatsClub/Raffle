@@ -34,6 +34,7 @@ class RFL_Ajax
 
         $email = $data['gc_email'] ?? '';
         $userId = get_current_user_id() ?: '';
+        $userLoggedIn = $userId;
 
         $displayName = $data['gc_first_name'] ?? '';
         $displayName .= !empty($data['gc_last_name']) ? ' ' . $data['gc_last_name'] : '';
@@ -67,35 +68,50 @@ class RFL_Ajax
             return;
         }
 
-        $stripe = new \Stripe\StripeClient('key');
+        $stripeKey = get_option('raffle_stripe_secret_key');
+
+        if (!$stripeKey) {
+            wp_send_json_error('There is no a stripe api key.');
+            return;
+        }
+
+        $stripe = new \Stripe\StripeClient($stripeKey);
 
         /* Get a customer */
-        $customer = $stripe->customers->retrieve('cus_NffrFeUfNV2Hib', []);
+        $customerId = 'cus_Q8pxFGvqOK6pvJ';
+        $customer = $stripe->customers->retrieve($customerId);
 
         if (empty($customer)) {
             /* Create a customer */
             $customer = $stripe->customers->create([
                 'email' => $email,
-                'name'  => $displayName,
+                'name'  => $displayName
             ]);
         }
+
+        /* Save payment method */
+        $setupIntent = $stripe->setupIntents->create([
+            'automatic_payment_methods' => true,
+            'payment_method_types'      => ['card'],
+            'customer'                  => $customer->id
+        ]);
 
         try {
             $subscription = $stripe->subscriptions->create([
                 'customer'         => $customer->id,
                 'currency'         => 'usd',
                 'metadata'         => [
-                    'product_id' => 'prod_Q7hA4NMjJ6VdJ0',
+                    'product_id' => 'prod_Q7hA4NMjJ6VdJ0'
                 ],
                 'items'            => [
                     [
-                        'price' => 'price_1PHRmZACbB2tPZl0s6pZ29eH',
-                    ],
+                        'price' => 'price_1PHRmZACbB2tPZl0s6pZ29eH'
+                    ]
                 ],
                 // this subscription is not paid yet
                 'payment_behavior' => 'default_incomplete',
                 'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
-                'expand'           => ['latest_invoice.payment_intent'],
+                'expand'           => ['latest_invoice.payment_intent']
             ]);
 
         } catch (\Stripe\Exception\ApiErrorException $e) {
@@ -105,17 +121,19 @@ class RFL_Ajax
 
         $user = get_user_by('ID', $userId);
 
-        if (!empty($paymentResponse->id)) {
+        if (!empty($subscription->id)) {
             RFL_Database::insert_payment_response([
-                'email'           => $user->user_email,
-                'mobile'          => $data['gc_mobile'] ?? '',
-                'payment_id'      => $paymentResponse->id,
-                'amount'          => $amount,
-                'payment_request' => serialize($paymentResponse),
+                'email'       => $user->user_email ?? '',
+                'mobile'      => $data['gc_mobile'] ?? '',
+                'payment_id'  => $subscription->id,
+                'customer_id' => $subscription->customer,
+                'amount'      => $amount
             ]);
         }
 
-        RFL_Functions::user_log_in($user);
+        if (!$userLoggedIn && !empty($user)) {
+            RFL_Functions::user_log_in($user);
+        }
 
         if (isset($subscription->latest_invoice->payment_intent->client_secret)) {
             wp_send_json_success([

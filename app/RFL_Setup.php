@@ -30,7 +30,7 @@ class RFL_Setup
         wp_localize_script('raffle-front-end-scripts', 'raffle', [
             'ajaxurl'   => admin_url('admin-ajax.php'),
             'nonce'     => wp_create_nonce('payment-promotion-nonce'),
-            'stripeKey' => 'key' //Make dynamically
+            'stripeKey' => get_option('raffle_stripe_publishable_key')
         ]);
     }
 

@@ -25,6 +25,7 @@ require_once('lib/stripe/vendor/autoload.php');
 
 const RAFFLE_DOMAIN = 'raffle';
 const RAFFLE_PREFIX = 'gc';
+const RAFFLE_SETTING_PAGE = RAFFLE_DOMAIN . '-settings';
 
 register_activation_hook(__FILE__, function () {
     RFL_Database::table_stripe_payments_install();

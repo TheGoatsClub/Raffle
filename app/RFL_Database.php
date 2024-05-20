@@ -16,8 +16,8 @@ class RFL_Database
             `email` varchar(250) DEFAULT NULL,
             `mobile` varchar(250) DEFAULT NULL,
             `payment_id` varchar(250) DEFAULT NULL,
+            `customer_id` varchar(250) DEFAULT NULL,
             `amount` int(10) unsigned DEFAULT NULL,
-            `payment_request` TEXT NULL,
             `message` TEXT NULL,
             `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (`id`)
