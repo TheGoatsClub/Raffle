@@ -89,12 +89,23 @@ class RFL_Ajax
             ]);
         }
 
-        /* Save payment method */
-        $setupIntent = $stripe->setupIntents->create([
-            'automatic_payment_methods' => true,
-            'payment_method_types'      => ['card'],
-            'customer'                  => $customer->id
-        ]);
+        $user = get_user_by('ID', $userId);
+
+        if (!empty($user)) {
+            update_user_meta($userId, 'stripe_customer_id', $customer->id);
+
+            /* Save payment method */
+            $setupIntent = $stripe->paymentIntents->create([
+                'amount'                    => $data['gc_amount'] ?? 0,
+                'currency'                  => 'usd',
+                'automatic_payment_methods' => ['enabled' => true],
+                'customer'                  => $customer->id
+            ]);
+
+            if (!empty($setupIntent->id)) {
+                update_user_meta($userId, 'stripe_payment_intent', $setupIntent->id);
+            }
+        }
 
         try {
             $subscription = $stripe->subscriptions->create([
@@ -115,11 +126,8 @@ class RFL_Ajax
             ]);
 
         } catch (\Stripe\Exception\ApiErrorException $e) {
-            //insert to the database
             wp_send_json_error($e->getMessage());
         }
-
-        $user = get_user_by('ID', $userId);
 
         if (!empty($subscription->id)) {
             RFL_Database::insert_payment_response([
